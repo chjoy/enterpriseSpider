@@ -1,6 +1,4 @@
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
