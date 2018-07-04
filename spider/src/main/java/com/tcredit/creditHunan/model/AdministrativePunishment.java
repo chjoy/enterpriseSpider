@@ -16,7 +16,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author joey123
- * @since 2018-07-03
+ * @since 2018-07-04
  */
 @TableName("administrative_punishment")
 public class AdministrativePunishment implements Serializable {
@@ -73,6 +73,11 @@ public class AdministrativePunishment implements Serializable {
      */
     @TableField("create_time")
     private Date createTime;
+    /**
+     * 数据是否有效（删除）0 无效（已删除） 1有效（未删除）
+     */
+    @TableField("data_state")
+    private Integer dataState;
 
 
     public Integer getId() {
@@ -163,6 +168,14 @@ public class AdministrativePunishment implements Serializable {
         this.createTime = createTime;
     }
 
+    public Integer getDataState() {
+        return dataState;
+    }
+
+    public void setDataState(Integer dataState) {
+        this.dataState = dataState;
+    }
+
     @Override
     public String toString() {
         return "AdministrativePunishment{" +
@@ -177,6 +190,7 @@ public class AdministrativePunishment implements Serializable {
                 ", punishTimeStr=" + punishTimeStr +
                 ", punishTime=" + punishTime +
                 ", createTime=" + createTime +
+                ", dataState=" + dataState +
                 "}";
     }
 }

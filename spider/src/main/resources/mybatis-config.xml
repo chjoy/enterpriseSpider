@@ -36,7 +36,7 @@
     </settings>
 
     <typeAliases>
-        <package name="com.tcredit.tpark.boss.vo"/>
+        <package name="com.tcredit.creditHunan"/>
     </typeAliases>
 
 </configuration>

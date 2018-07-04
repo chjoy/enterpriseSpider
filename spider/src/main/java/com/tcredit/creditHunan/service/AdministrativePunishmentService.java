@@ -3,6 +3,8 @@ package com.tcredit.creditHunan.service;
 import com.tcredit.creditHunan.model.AdministrativePunishment;
 import com.baomidou.mybatisplus.service.IService;
 
+import java.util.Date;
+
 /**
  * <p>
  *  服务类
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface AdministrativePunishmentService extends IService<AdministrativePunishment> {
 
+    Date selectLatestPublishDate();
 }

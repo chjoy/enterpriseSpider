@@ -15,11 +15,12 @@
         <result column="punish_time_str" property="punishTimeStr" />
         <result column="punish_time" property="punishTime" />
         <result column="create_time" property="createTime" />
+        <result column="data_state" property="dataState" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, title, publish_time_str AS publishTimeStr, publish_time AS publishTime, punish_no AS punishNo, subject, legal_representative AS legalRepresentative, legal_operation_department AS legalOperationDepartment, punish_time_str AS punishTimeStr, punish_time AS punishTime, create_time AS createTime
+        id, title, publish_time_str AS publishTimeStr, publish_time AS publishTime, punish_no AS punishNo, subject, legal_representative AS legalRepresentative, legal_operation_department AS legalOperationDepartment, punish_time_str AS punishTimeStr, punish_time AS punishTime, create_time AS createTime, data_state AS dataState
     </sql>
 
 </mapper>
