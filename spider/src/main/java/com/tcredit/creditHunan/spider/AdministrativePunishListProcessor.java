@@ -36,14 +36,15 @@ public class AdministrativePunishListProcessor implements PageProcessor{
             Spider contentSpider = Spider.create(new AdministrativePunishContentProcessor()).thread(5);
             String[] dataArr =  dataListStr.split(",");
             for (String dataStr : dataArr) {
-                String[] fields = dataStr.split("\\$");
-                String unionId = fields[1];
-                contentSpider.addUrl(AdministrativePunishContentProcessor.PUNISH_CONTENT_URL+unionId);
+                String[] fields = dataStr.replaceAll("\"","").split("\\$");
+                //将发布时间和id保存到request
+                Map<String,Object> extras = new HashMap<String,Object>();
+                extras.put("publishTimeStr",fields[5].trim());
+                extras.put("unionId",fields[1].trim());
+                Request request = new Request(AdministrativePunishContentProcessor.PUNISH_CONTENT_URL+fields[1]).setExtras(extras);
+                contentSpider.addRequest(request);
             }
             contentSpider.run();
-//            Map<String,Object> extras = new HashMap<String,Object>();
-//            Request request = new Request(PUNISH_LIST_URL+"&startrecord="+0+"&endrecord="+10).setExtras(extras);
-//            extras.put("id","test1");
         }
     }
 

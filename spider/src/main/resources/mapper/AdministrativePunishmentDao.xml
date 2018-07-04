@@ -5,6 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.tcredit.creditHunan.model.AdministrativePunishment">
         <id column="id" property="id" />
+        <result column="union_id" property="unionId" />
         <result column="title" property="title" />
         <result column="publish_time_str" property="publishTimeStr" />
         <result column="publish_time" property="publishTime" />
@@ -14,13 +15,14 @@
         <result column="legal_operation_department" property="legalOperationDepartment" />
         <result column="punish_time_str" property="punishTimeStr" />
         <result column="punish_time" property="punishTime" />
+        <result column="content" property="content" />
         <result column="create_time" property="createTime" />
         <result column="data_state" property="dataState" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, title, publish_time_str AS publishTimeStr, publish_time AS publishTime, punish_no AS punishNo, subject, legal_representative AS legalRepresentative, legal_operation_department AS legalOperationDepartment, punish_time_str AS punishTimeStr, punish_time AS punishTime, create_time AS createTime, data_state AS dataState
+        id,union_id AS unionId title, publish_time_str AS publishTimeStr, publish_time AS publishTime, punish_no AS punishNo, subject, legal_representative AS legalRepresentative, legal_operation_department AS legalOperationDepartment, punish_time_str AS punishTimeStr, punish_time AS punishTime,content, create_time AS createTime, data_state AS dataState
     </sql>
 
 </mapper>

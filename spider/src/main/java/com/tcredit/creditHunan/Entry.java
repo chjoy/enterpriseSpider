@@ -1,5 +1,6 @@
 package com.tcredit.creditHunan;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
@@ -8,7 +9,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  */
 public class Entry {
+    public static final ApplicationContext context = new ClassPathXmlApplicationContext("app.xml");
     public static void main(String[] args) throws Exception{
-        new ClassPathXmlApplicationContext("app.xml");
+
     }
 }

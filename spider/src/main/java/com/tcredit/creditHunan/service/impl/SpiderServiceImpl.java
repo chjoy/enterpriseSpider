@@ -63,7 +63,7 @@ public class SpiderServiceImpl implements SpiderService {
     }
 
     private void crawlPart(int index) {
-        index=800;//网页有bug，从页面读取的数据来看根本没有20000+的数据
+        index=100;//网页有bug，从页面读取的数据来看根本没有20000+的数据
         Spider spider = Spider.create(new AdministrativePunishListProcessor()).thread(5);
         if (index < AdministrativePunishListProcessor.NUM_PER_PAGE)
             spider.addUrl(AdministrativePunishListProcessor.PUNISH_LIST_URL + "&startrecord=0" + "&endrecord=" + index).run();

@@ -26,6 +26,11 @@ public class AdministrativePunishment implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     /**
+     * 关联id
+     */
+    @TableField("union_id")
+    private String unionId;
+    /**
      * 案件名称
      */
     private String title;
@@ -68,6 +73,10 @@ public class AdministrativePunishment implements Serializable {
      */
     @TableField("punish_time")
     private Date punishTime;
+    /**
+     * 行政处罚决定书（全文或摘要）
+     */
+    private String content;
     /**
      * 数据创建时间
      */
@@ -192,5 +201,21 @@ public class AdministrativePunishment implements Serializable {
                 ", createTime=" + createTime +
                 ", dataState=" + dataState +
                 "}";
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getUnionId() {
+        return unionId;
+    }
+
+    public void setUnionId(String unionId) {
+        this.unionId = unionId;
     }
 }
