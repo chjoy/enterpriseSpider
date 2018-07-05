@@ -34,7 +34,7 @@ public class AdministrativePunishContentProcessor implements PageProcessor {
         administrativePunishment.setPublishTimeStr(publishTimeStr);
         //发布时间
         try {
-            administrativePunishment.setPublishTime(DateUtils.parseDate(publishTimeStr, "yyyy-MM-dd"));
+            administrativePunishment.setPublishTime(DateUtils.parseDate(publishTimeStr, "yyyy-MM-dd","yyyy-MM-dd hh:mm:ss","yyyy/MM/dd"));
         } catch (ParseException e) {
             e.printStackTrace();
         }
