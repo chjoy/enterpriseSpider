@@ -50,7 +50,7 @@ public class AdministrativePunishContentProcessor implements PageProcessor {
         String punishTimeStr = page.getHtml().xpath("//table[@class='xzcf_bg']/tbody/tr[4]/td[@class='xzcf_xx']/text()").get().trim();
         administrativePunishment.setPunishTimeStr(punishTimeStr);
         try {
-            administrativePunishment.setPunishTime(DateUtils.parseDate(punishTimeStr, "yyyy-MM-dd", "yyyy/MM/dd"));
+            administrativePunishment.setPunishTime(DateUtils.parseDate(punishTimeStr, "yyyy-MM-dd","yyyy-MM-dd hh:mm:ss", "yyyy/MM/dd"));
         } catch (ParseException e) {
             e.printStackTrace();
         }
