@@ -3,18 +3,19 @@ package com.tcredit.creditHunan.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.tcredit.creditHunan.service.SpiderService;
 import com.tcredit.creditHunan.spider.AdministrativePunishListProcessor;
-import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Spider;
+import us.codecraft.webmagic.utils.HttpConstant;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Date;
 
 /**
  * Created by yp-tc-m-7179 on 2018/7/4.
- *
  */
 @Service
 public class SpiderServiceImpl implements SpiderService {
@@ -27,11 +28,12 @@ public class SpiderServiceImpl implements SpiderService {
     }
 
     private void crawlPart(Date publishDate) {
-        String publishDateStr = DateFormatUtils.format(publishDate, "yyyy-MM-dd");
+//        String publishDateStr = DateFormatUtils.format(publishDate, "yyyy-MM-dd");
         for (int i = 0; i < AdministrativePunishListProcessor.OVER_PAGE_NUM; i++) {
             String[] dataArr = null;
             try {
-                dataArr = JSON.parseObject(Jsoup.connect(AdministrativePunishListProcessor.PUNISH_LIST_URL + "&startrecord=" + i * AdministrativePunishListProcessor.NUM_PER_PAGE + "&endrecord=" + AdministrativePunishListProcessor.NUM_PER_PAGE + i * AdministrativePunishListProcessor.NUM_PER_PAGE).timeout(60000).get().data()).getJSONArray("dataStore").toArray(new String[]{});
+                String result = Jsoup.connect(AdministrativePunishListProcessor.PUNISH_LIST_URL + "&startrecord=" + i * AdministrativePunishListProcessor.NUM_PER_PAGE + "&endrecord=" + (AdministrativePunishListProcessor.NUM_PER_PAGE + i * AdministrativePunishListProcessor.NUM_PER_PAGE)).timeout(60000).post().toString();
+                dataArr = JSON.parseArray(result.substring(result.indexOf("["), result.indexOf("]") + 1)).toArray(new String[]{});
             } catch (IOException e) {
                 e.printStackTrace();
                 //如果数据数组为空，那么说明没有数据了，不再继续
@@ -40,7 +42,14 @@ public class SpiderServiceImpl implements SpiderService {
             //分析每条数据的发布日期
             for (int j = 0; j < dataArr.length; j++) {
                 String[] fields = dataArr[j].split("\\$");
-                if (fields[5].trim().equalsIgnoreCase(publishDateStr)) {
+                Date date = null;
+                try {
+                    date = DateUtils.parseDate(fields[5].trim(), "yyyy-MM-dd", "yyyy/MM/dd");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                if (publishDate.compareTo(date) == 0) {
                     crawlPart(i * AdministrativePunishListProcessor.NUM_PER_PAGE + j);
                     return;
                 }
@@ -63,16 +72,16 @@ public class SpiderServiceImpl implements SpiderService {
     }
 
     private void crawlPart(int index) {
-        index=100;//网页有bug，从页面读取的数据来看根本没有20000+的数据
+//        if (index==0) return;
+        index = 8700;//网页有bug，从页面读取的数据来看根本没有20000+的数据
         Spider spider = Spider.create(new AdministrativePunishListProcessor()).thread(5);
-        if (index < AdministrativePunishListProcessor.NUM_PER_PAGE)
-            spider.addUrl(AdministrativePunishListProcessor.PUNISH_LIST_URL + "&startrecord=0" + "&endrecord=" + index).run();
-        else {
-            for (int i = 0; i < index / AdministrativePunishListProcessor.NUM_PER_PAGE; i++) {
-                Request request = new Request(AdministrativePunishListProcessor.PUNISH_LIST_URL + "&startrecord=" + (index - i * AdministrativePunishListProcessor.NUM_PER_PAGE - AdministrativePunishListProcessor.NUM_PER_PAGE + 1) + "&endrecord=" + (index - i * AdministrativePunishListProcessor.NUM_PER_PAGE));
-                spider.addRequest(request);
-            }
-            spider.run();
+        for (int i = 0; i < index / AdministrativePunishListProcessor.NUM_PER_PAGE; i++) {
+            Request request = new Request(AdministrativePunishListProcessor.PUNISH_LIST_URL + "&startrecord=" + (index - i * AdministrativePunishListProcessor.NUM_PER_PAGE - AdministrativePunishListProcessor.NUM_PER_PAGE + 1) + "&endrecord=" + (index - i * AdministrativePunishListProcessor.NUM_PER_PAGE));
+            request.setMethod(HttpConstant.Method.POST);
+            spider.addRequest(request);
         }
+        Request request = new Request(AdministrativePunishListProcessor.PUNISH_LIST_URL + "&startrecord=1" + "&endrecord=" + index % AdministrativePunishListProcessor.NUM_PER_PAGE).setMethod(HttpConstant.Method.POST);
+        spider.addRequest(request);
+        spider.run();
     }
 }

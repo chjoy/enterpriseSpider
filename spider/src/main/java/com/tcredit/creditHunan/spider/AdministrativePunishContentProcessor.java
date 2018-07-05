@@ -14,9 +14,9 @@ import java.util.Date;
 
 /**
  * Created by yp-tc-m-7179 on 2018/7/3.
- *  行政处罚详细数据爬取
+ * 行政处罚详细数据爬取
  */
-public class AdministrativePunishContentProcessor implements PageProcessor{
+public class AdministrativePunishContentProcessor implements PageProcessor {
     public static final String PUNISH_CONTENT_URL = "http://www.credithunan.gov.cn:30816/publicity_hn/webInfo/punishmentDetail.do?id=";
 
     private Site site = Site.me().setRetryTimes(3).setSleepTime(1000).setTimeOut(10000);
@@ -28,13 +28,13 @@ public class AdministrativePunishContentProcessor implements PageProcessor{
         //数据有效性
         administrativePunishment.setDataState(DataStateEnum.ACTIVE.getValue());
 
-        administrativePunishment.setUnionId((String)page.getRequest().getExtra("unionId"));
+        administrativePunishment.setUnionId((String) page.getRequest().getExtra("unionId"));
         //发布时间，字符串类型
-        String publishTimeStr = (String)page.getRequest().getExtra("publishTimeStr");
+        String publishTimeStr = (String) page.getRequest().getExtra("publishTimeStr");
         administrativePunishment.setPublishTimeStr(publishTimeStr);
         //发布时间
         try {
-            administrativePunishment.setPublishTime(DateUtils.parseDate(publishTimeStr,"yyyy-MM-dd"));
+            administrativePunishment.setPublishTime(DateUtils.parseDate(publishTimeStr, "yyyy-MM-dd"));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -42,16 +42,15 @@ public class AdministrativePunishContentProcessor implements PageProcessor{
         administrativePunishment.setTitle(page.getHtml().xpath("//td[@class='listf2']/text()").get().trim());
         administrativePunishment.setPunishNo(page.getHtml().xpath("//table[@class='xzcf_bg']/tbody/tr[1]/td[@class='xzcf_xx']/text()").get().trim());
         //行政相对人
-        String subjectStr = page.getHtml().xpath("//table[@class='xzcf_bg']/tbody/tr[2]/td[@class='xzcf_xx']/text()").get().trim();
-        administrativePunishment.setSubject(subjectStr.split("    ")[0].trim());
-        administrativePunishment.setLegalRepresentative(subjectStr.split("    ")[1].trim());
+        administrativePunishment.setSubject(page.getHtml().xpath("//table[@class='xzcf_bg']/tbody/tr[2]/td[@class='xzcf_xx']/text(1)").get().trim());
+        administrativePunishment.setLegalRepresentative(page.getHtml().xpath("//table[@class='xzcf_bg']/tbody/tr[2]/td[@class='xzcf_xx']/text(2)").get().trim());
         //执法部门
         administrativePunishment.setLegalOperationDepartment(page.getHtml().xpath("//table[@class='xzcf_bg']/tbody/tr[3]/td[@class='xzcf_xx']/text()").get().trim());
         //做出处罚的时间
         String punishTimeStr = page.getHtml().xpath("//table[@class='xzcf_bg']/tbody/tr[4]/td[@class='xzcf_xx']/text()").get().trim();
         administrativePunishment.setPunishTimeStr(punishTimeStr);
         try {
-            administrativePunishment.setPunishTime(DateUtils.parseDate(punishTimeStr,"yyyy-MM-dd","yyyy/MM/dd"));
+            administrativePunishment.setPunishTime(DateUtils.parseDate(punishTimeStr, "yyyy-MM-dd", "yyyy/MM/dd"));
         } catch (ParseException e) {
             e.printStackTrace();
         }

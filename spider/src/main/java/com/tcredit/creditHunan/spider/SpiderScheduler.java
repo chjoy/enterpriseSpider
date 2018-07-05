@@ -4,7 +4,6 @@ import com.tcredit.creditHunan.service.AdministrativePunishmentService;
 import com.tcredit.creditHunan.service.SpiderService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import us.codecraft.webmagic.Spider;
 
 import javax.annotation.Resource;
 import java.util.Date;
