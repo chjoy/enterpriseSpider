@@ -18,7 +18,7 @@ public class SpiderScheduler {
     private SpiderService spiderService;
     @Resource
     private AdministrativePunishmentService administrativePunishmentService;
-    @Scheduled(fixedRate = 1000*300)//3秒执行一次
+    @Scheduled(fixedRate = 1000*60*120)//3秒执行一次
 //    @Scheduled(cron= "0 0 3 * * *")//每天凌晨3点，执行一次
     public void run() throws Exception{
         final Date latestPublishDate = administrativePunishmentService.selectLatestPublishDate();
