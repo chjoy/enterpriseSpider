@@ -1,30 +1,58 @@
 package com.tcredit.creditHunan.service.impl;
 
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.tcredit.creditHunan.service.SpiderService;
+import com.tcredit.creditHunan.service.SupremeCourtDataService;
 import com.tcredit.creditHunan.spider.AdministrativePunishListProcessor;
+import net.sourceforge.tess4j.Tesseract;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.http.client.HttpClient;
 import org.jsoup.Jsoup;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.utils.HttpConstant;
 
-import java.io.IOException;
+import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.text.ParseException;
 import java.util.Date;
 
 /**
  * Created by yp-tc-m-7179 on 2018/7/4.
+ *
  */
 @Service
 public class SpiderServiceImpl implements SpiderService {
+    @Resource
+    private ThreadPoolTaskExecutor taskExecutor;
+    @Resource
+    private SupremeCourtDataService supremeCourtDataService;
 
 
     public void crawlAdministrativePunishment(Date date) {
         if (date == null)
             crawlAll();
         else crawlPart(date);
+    }
+
+    public void crawlSupremeCourtData(String... names) throws Exception{
+        final String pCode = supremeCourtDataService.getpCode();
+        if (pCode==null) return;
+        for (String name : names) {
+            taskExecutor.execute(new Runnable() {
+                public void run() {
+                    //todo 多线程实现数据入库
+                    System.out.println(pCode);
+                }
+            });
+        }
     }
 
     private void crawlPart(Date publishDate) {

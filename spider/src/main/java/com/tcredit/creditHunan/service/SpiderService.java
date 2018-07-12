@@ -13,4 +13,6 @@ public interface SpiderService {
      * @param date
      */
     void crawlAdministrativePunishment(Date date);
+
+    void crawlSupremeCourtData(String... names) throws Exception;
 }
