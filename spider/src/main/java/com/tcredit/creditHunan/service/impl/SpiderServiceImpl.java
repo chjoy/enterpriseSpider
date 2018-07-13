@@ -26,7 +26,6 @@ import java.util.Date;
 
 /**
  * Created by yp-tc-m-7179 on 2018/7/4.
- *
  */
 @Service
 public class SpiderServiceImpl implements SpiderService {
@@ -42,13 +41,14 @@ public class SpiderServiceImpl implements SpiderService {
         else crawlPart(date);
     }
 
-    public void crawlSupremeCourtData(String... names) throws Exception{
+    public void crawlSupremeCourtData(String... names) throws Exception {
         final String pCode = supremeCourtDataService.getpCode();
-        if (pCode==null) return;
+        if (pCode == null) return;
         for (String name : names) {
             taskExecutor.execute(new Runnable() {
                 public void run() {
                     //todo 多线程实现数据入库
+
                     System.out.println(pCode);
                 }
             });
@@ -78,7 +78,7 @@ public class SpiderServiceImpl implements SpiderService {
                     return;
                 }
                 if (publishDate.compareTo(date) == 0) {
-                    crawlPart(i * AdministrativePunishListProcessor.NUM_PER_PAGE + j-1);//不包含本条目，所以-1
+                    crawlPart(i * AdministrativePunishListProcessor.NUM_PER_PAGE + j - 1);//不包含本条目，所以-1
                     return;
                 }
             }
@@ -100,7 +100,7 @@ public class SpiderServiceImpl implements SpiderService {
     }
 
     private void crawlPart(int index) {
-        if (index==0) return;
+        if (index == 0) return;
 //        index = 8700;//网页有bug，从页面读取的数据来看根本没有20000+的数据
         Spider spider = Spider.create(new AdministrativePunishListProcessor()).thread(5);
         for (int i = 0; i < index / AdministrativePunishListProcessor.NUM_PER_PAGE; i++) {

@@ -1,1 +1,2 @@
 init
+验证码识别用到了tess4j，如果是mac电脑开发的话，需要brew install tesseract

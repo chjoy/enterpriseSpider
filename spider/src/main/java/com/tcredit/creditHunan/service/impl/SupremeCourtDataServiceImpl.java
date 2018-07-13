@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * Created by yp-tc-m-7179 on 2018/7/12.
+ *
  */
 @Service
 public class SupremeCourtDataServiceImpl implements SupremeCourtDataService {
